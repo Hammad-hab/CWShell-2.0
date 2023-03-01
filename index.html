@@ -1,0 +1,232 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CWShell</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    <style>
+
+      body {
+        margin: 0;
+        /* cursor: none; */
+        overflow-x: hidden;
+      }
+      *::selection {
+        background-color: rgb(255, 211, 135);
+      }
+
+      h1 {
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        background-color: rgba(253, 160, 0, 0.733);
+        padding: 20px;
+        margin: 0;
+        border-bottom: none;
+        opacity: 0.9;
+        width: 100vw;
+        position: fixed;
+        transition: all 0.5s;
+        backdrop-filter: sepia();
+        z-index: 1;
+        /* text-shadow: 10px 10px 50px green; */
+        /* mix-blend-mode: difference */
+      }
+      body {
+        background-color: rgb(253, 219, 160);
+      }
+      /* .P0 {
+        width: 50vw;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .P1 {
+        margin-left: 50vw;
+        margin-top: 1000%;
+      } */
+      .paralax {
+        background-image: url(pic-1.jpg);
+        width: 100vw;
+        height: 50vh;
+        background-attachment: fixed;
+        margin: 0;
+      }
+      .paralax:hover {
+        transform: scaleZ(100px);
+      }
+
+      .infopara {
+        position: fixed;
+        top: 10px;
+        height: fit-content;
+        z-index: 200;
+        display: block;
+        color: white;
+        font-size: medium;
+        font-weight: bolder;
+        margin-left: -40px;
+        transform: rotate(-30deg) !important;
+        margin-top: 45px;
+        background-color: black;
+        padding: 100px;
+        padding-top: 10;
+        padding-bottom: 10;
+        box-shadow: 10px 10px 100px violet;
+      }
+      #cursor {
+        user-select: none;
+        position: absolute;
+        /* transform: rotate3d(1,1,1, 45deg); */
+
+        /* font-size: 50px; */
+      }
+    </style>
+  </head>
+  <body>
+    <p class="infopara animate__animated animate__flash">Powered by Clockwatch</p>
+    <!-- <div id="cursor">↖️</div> -->
+
+    <div id="header">
+      <div id="heading">
+        <h1 class="animate__animated animate__slideInDown">
+          CWShellv2.0
+          <small style="font-size: 10px">
+            <hr />
+            Free, Elegant and Powerful
+          </small>
+        </h1>
+      </div>
+
+      <div class="paralax" id="ParalaX"></div>
+    </div>
+
+    <div class="content container" id="container">
+      <hr />
+
+      <h2>What is CWShell?</h2>
+      <h5>
+        CWShell is a free and open source remote shell that focuses to be
+        user-friendly and accessable on all Operating Systems. It succeeds its
+        predecessors, CWShell v1.0 (more about it
+        <a href="https://hammad-hab.github.io/CWShell/">here</a>) and
+        CWShellv1.2 which was only available as open-source (github repo
+        <a href="https://github.com/Hammad-hab/CWShell-1.2">here</a>)
+      </h5>
+      <hr />
+      <div class="row" id="row1">
+        <p class="col-lg">
+          <b>Open Source</b>
+          <br />
+          CWShell is a sleek and modren remote shell, an old technology reborn.
+          One of it's most attractive features is that it is open-source,
+          meaning that anyone can share, edit or integrate it's code as you wish
+          without the fear of any licence or copywrite issues. Click on
+          <code>Get Source</code> to download the <code>.zip</code> file
+          containing all the Python files that were used to create this project!
+        </p>
+        <p class="col-lg">
+          <b>Easy to use</b>
+          <br />
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim repellat
+          expedita nesciunt ipsa, ea optio nam alias odio consequuntur cum
+          eligendi libero impedit tempora saepe quos dicta at vero voluptate!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae,
+          sed reprehenderit! Et cum, dicta repellendus omnis laborum eaque
+          facere porro qui temporibus provident hic voluptates sunt possimus
+          labore assumenda consectetur?
+        </p>
+        <p class="col-lg">
+          <b>Open Source</b>
+          <br />
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo tempore
+          necessitatibus perspiciatis magnam ipsa ad minima. Perspiciatis magni,
+          molestiae voluptatem dolorem fugiat tempora corporis animi
+          exercitationem suscipit incidunt dolorum eligendi! Lorem ipsum dolor
+          sit, amet consectetur adipisicing elit. Accusantium adipisci impedit
+          ipsam numquam velit fugiat assumenda minima, iste vitae, optio nisi
+          soluta distinctio consectetur beatae est, totam provident inventore
+          obcaecati.
+        </p>
+      </div>
+      <hr />
+      <div class="row">
+        <p class="col-lg">
+          <b style="color: rgb(156, 0, 0);">
+          CWShell is still under development, you cannot download it.
+          It will be released somewhere in August, exact release date hasn't been decided.
+          </b>
+        <div style="filter: blur(2px);">
+            <a href="">
+              <button id="download" class="btn btn-secondary disabled" disabled>
+                Download Compiled
+              </button>
+            </a>
+            or
+            <a href="CWShell_Source.zip" download>
+              <button id="download" class="btn btn-secondary disabled" disabled>
+                Get Source
+              </button>
+            </a>
+        </div>
+        
+        </p>
+      </div>
+      <hr />
+    </div>
+
+    <!-- <div style="margin-top: 100%;"></div> -->
+    <script>
+      // window.scrollTo(0, 0);
+      // const Cursor = document.getElementById("cursor");
+      // const Heading = document.getElementById("heading");
+      // const Paragraphs = document.querySelectorAll("p");
+      // const Download = document.getElementById("download");
+      // const CursorString = "↖️";
+      // function setText(text) {
+      //   Cursor.innerText = text;
+      // }
+      // window.onmousemove = (e) => {
+      //   var x = e.clientX;
+      //   var y = e.clientY;
+      //   Cursor.setAttribute(
+      //     "style",
+      //     `transform: translate(${x}px,${y}px); font-weight: bolder; mix-blend-mode: color-burn; margin: 0; padding: 0; `
+      //   );
+      // };
+      // Heading.onmouseover = (e) => {
+      //   setText("A Free CLI remote shell");
+      // };
+      // Heading.onmouseout = (e) => {
+      //   setText(CursorString);
+      // };
+      // Paragraphs.forEach((e) => {
+      //   e.onmouseover = (ev) => {
+      //     setText("SELECT ME!");
+      //   };
+      //   e.onmouseout = (ev) => {
+      //     setText(CursorString);
+      //   };
+      // });
+      // window.onscroll = (e) => {
+      //   var element = document
+      //     .getElementById("container")
+      //     .getBoundingClientRect();
+      //   if (window.scrollY >= element.y) {
+      //     document.getElementById("heading").style = "opacity: 100;";
+      //   } else if (window.scrollY < element.y) {
+      //     document.getElementById("heading").style = "opacity: 0.5;";
+      //   }
+      // };
+    </script>
+  </body>
+</html>
