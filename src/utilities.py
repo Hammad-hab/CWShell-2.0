@@ -1,6 +1,6 @@
 from random import random
 from math import floor
-import socket
+import socket, ipaddress
 import subprocess as sb
 
 def search(entries):
@@ -47,4 +47,13 @@ def Connected() -> bool:
         return True
     else:
         return False
+    ...
+
+def is_ipv4(ipv4 : str | bytes):
+    try:
+        IPV4 = ipaddress.ip_address(ipv4)
+    except:
+        return False
+    else:
+        return True
     ...

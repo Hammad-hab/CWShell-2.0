@@ -12,11 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <style>
-
       body {
         margin: 0;
         /* cursor: none; */
@@ -90,12 +89,22 @@
 
         /* font-size: 50px; */
       }
+      blur {
+        filter: blur(2px);
+      }
+      horRuler {
+        /* width: 0; */
+        height: 0.5px;
+        margin: 1.5px;
+        border: 1px solid rgba(0,0,0,.1);
+        display: block;
+      }
     </style>
   </head>
   <body>
-    <p class="infopara animate__animated animate__flash">Powered by Clockwatch</p>
-    <!-- <div id="cursor">↖️</div> -->
-
+    <p class="infopara animate__animated animate__flash">
+      Powered by Clockwatch
+    </p>
     <div id="header">
       <div id="heading">
         <h1 class="animate__animated animate__slideInDown">
@@ -105,6 +114,7 @@
             Free, Elegant and Powerful
           </small>
         </h1>
+
       </div>
 
       <div class="paralax" id="ParalaX"></div>
@@ -122,6 +132,7 @@
         CWShellv1.2 which was only available as open-source (github repo
         <a href="https://github.com/Hammad-hab/CWShell-1.2">here</a>)
       </h5>
+      <small>See the <a href="http://"><b>documentation</b></a></small>
       <hr />
       <div class="row" id="row1">
         <p class="col-lg">
@@ -137,54 +148,59 @@
         <p class="col-lg">
           <b>Easy to use</b>
           <br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim repellat
-          expedita nesciunt ipsa, ea optio nam alias odio consequuntur cum
-          eligendi libero impedit tempora saepe quos dicta at vero voluptate!
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae,
-          sed reprehenderit! Et cum, dicta repellendus omnis laborum eaque
-          facere porro qui temporibus provident hic voluptates sunt possimus
-          labore assumenda consectetur?
+          CWShell is a CLI (<b>C</b>ommand <b>L</b>ine <b>I</b>nterface)
+          Application, this might seem scary and not at all
+          <i>“Easy to use“</i> at first but believe it or not, CWShell's
+          commands use an extremely simple syntax similar to UNIX and BASH
+          (<b>B</b>ourne <b>A</b>gain <b>SH</b>ell), it imitated UNIX more than BASH. Commands also have readable 
+          <i>“Long Parameters“</i> for example:<br>
+              <code>info --ip</code> <br>
+              <code>info --name</code><br>
+              <code>server --address <blur>192.168.43.50</blur> 6000</code>
+          <horRuler></horRuler>
+          <small>To get more information about the above commands see the <a href="http://">documentation</a></small>
+          <horRuler></horRuler>
         </p>
         <p class="col-lg">
-          <b>Open Source</b>
+          <b>Operating System Compatibility</b>
           <br />
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo tempore
-          necessitatibus perspiciatis magnam ipsa ad minima. Perspiciatis magni,
-          molestiae voluptatem dolorem fugiat tempora corporis animi
-          exercitationem suscipit incidunt dolorum eligendi! Lorem ipsum dolor
-          sit, amet consectetur adipisicing elit. Accusantium adipisci impedit
-          ipsam numquam velit fugiat assumenda minima, iste vitae, optio nisi
-          soluta distinctio consectetur beatae est, totam provident inventore
-          obcaecati.
+          The problem with many remote control CLI utilites is that they are usually not quite powerful when it comes to cross-platform
+          support, in that case, CWShell has got you covered. Being made from Python gives it countless plus points, cross-platform support is one of them.
+          We already provide compiled reasources for Windows and Unix Based Operating Systems but for custom made Operating Systems or BSD systems, you'll need to download
+          Python Language, the source and you're good to go! 
+          <horRuler></horRuler>
+          <small>
+            (NOTE: In the SRC directory, see the <code>requirments.txt</code> and download the required packages before executing <code>src/app.py</code>. Happy Remote Controlling!)
+          </small>
+          <horRuler></horRuler>
         </p>
       </div>
       <hr />
       <div class="row">
         <p class="col-lg">
-          <b style="color: rgb(156, 0, 0);">
-          CWShell is still under development, you cannot download it.
-          It will be released somewhere in August, exact release date hasn't been decided.
+          <b style="color: rgb(156, 0, 0)">
+            CWShell is still under development, you cannot download it. It will
+            be released somewhere in August, exact release date hasn't been
+            decided.
           </b>
-        <div style="filter: blur(2px);">
-            <a href="">
-              <button id="download" class="btn btn-secondary disabled" disabled>
-                Download Compiled
-              </button>
-            </a>
-            or
-            <a href="CWShell_Source.zip" download>
-              <button id="download" class="btn btn-secondary disabled" disabled>
-                Get Source
-              </button>
-            </a>
-        </div>
-        
         </p>
+
+        <div style="filter: blur(2px)">
+          <a href="">
+            <button id="download" class="btn btn-secondary disabled" disabled>
+              Download Compiled
+            </button>
+          </a>
+          or
+          <a href="CWShell_Source.zip" download>
+            <button id="download" class="btn btn-secondary disabled" disabled>
+              Get Source
+            </button>
+          </a>
+        </div>
       </div>
       <hr />
     </div>
-
-    <!-- <div style="margin-top: 100%;"></div> -->
     <script>
       // window.scrollTo(0, 0);
       // const Cursor = document.getElementById("cursor");

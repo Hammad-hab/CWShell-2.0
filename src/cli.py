@@ -14,6 +14,7 @@ Print.run("-p","Hello World!")
 """
 from termcolor import colored
 import keyword, sys
+from utilities import is_ipv4
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -223,10 +224,17 @@ class SyntaxHighlighter:
         pass
     def highlight(self,strn:str):
         arr = strn.split(" ")
+        
         for element in arr:
             if keyword.iskeyword(element):
                 index = arr.index(element)
                 arr[index] = colored(element, "magenta",attrs=["bold"])
+            elif element.isdigit() or element.isdecimal() or is_ipv4(element):
+                index = arr.index(element)
+                arr[index] = colored(element, "green",attrs=["bold"])
+            elif element.isalpha():
+                index = arr.index(element)
+                arr[index] = colored(element, "blue",attrs=["bold"])
         return "".join([x + " " for x in arr])
     def error(self, string:str, fancy=False, output=True):
         colorString = self._stdout(string, "red", fancy, output)
@@ -242,5 +250,6 @@ class SyntaxHighlighter:
     def warn(self, string:str, fancy=False, output=True):
         colorString = self._stdout(string,"yellow",fancy, output)
         return colorString
+    
     ...
 highlighter = SyntaxHighlighter()

@@ -1,7 +1,6 @@
-import socket as s
-from utilities import GetIP
-ADDR = ("192.168.43.50", 1341)
-Socket = s.socket(s.AF_INET, s.SOCK_STREAM)
-Socket.connect(ADDR)
-print(Socket.recv(1024))
-Socket.send(f"{s.gethostname()}:{GetIP()}")
+#!/usr/local/bin/python3
+from Socket import Client
+import sys
+c = Client()
+c.watch("192.168.43.50", int(sys.argv[1]))
+# c.watch("127.0.0.1", int(sys.argv[1]))
