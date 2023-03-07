@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/opt/homebrew/bin/python3
 from commands import loop, highlighter
 from utilities import Connected
 def error_handler():

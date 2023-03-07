@@ -1,10 +1,9 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 from cli import Map, Command, CommandEnviornment,CommandLoop, highlighter
 from socket import gethostname
-from threading import Thread
 from utilities import GetIP
 import os
-from Socket import Server
+from Socket import Server, Client
 Environment = CommandEnviornment()
 loop = CommandLoop(CommandEnviornment=Environment)
 
@@ -49,7 +48,6 @@ def r(*args):
 
 MAP = Map("server")
 MAP.addParam("-a","the address to which the socket is to be bound. Enter the IP address then the port. Please note that the IP address must be the ipv4 of your machine, you can find your IPV4 using info -i", "--address") 
-
 server = Command(MAP)
 
 
@@ -58,7 +56,17 @@ server = Command(MAP)
 def startServer(*args):
     s = Server(*args)
     s.start()
+    
+ClientM = Map("connect")
+ClientM.addParam("-a", "The machines address, port and IP address to be percise. Example: connect -a <ipv4> <port>", "--address")
+client = Command(ClientM)
 
+@client.on("-a")
+def connect(*args):
+    cl = Client()
+    # print(*args)
+    cl.watch(args[0], int(args[1]))
+    ...
 
-Environment.add(cname, Exit,server)
+Environment.add(cname, Exit,server, client)
 # loop.start()

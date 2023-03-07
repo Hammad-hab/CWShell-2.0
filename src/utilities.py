@@ -57,3 +57,13 @@ def is_ipv4(ipv4 : str | bytes):
     else:
         return True
     ...
+
+def is_alive(socket: socket.socket):
+    prepStr = "§§§".encode()
+    try:
+        socket.send(prepStr)
+    except:
+        return False
+    else:
+        return True
+    # ...

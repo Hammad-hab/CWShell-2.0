@@ -3,6 +3,8 @@ from cli import highlighter
 from threading import Thread
 import subprocess as sb
 import os
+from utilities import is_alive
+from interpreter import CWSHELL_INTERPRETER
 class Socket():
     MX_BYTES = 1048576
     DEF_ENCODING = "utf-8"
@@ -21,6 +23,8 @@ class Server(Socket):
         self.socket = s.socket(s.AF_INET, s.SOCK_STREAM)
         self.args = args
         self.running = True
+        self.modes = ["PYTHON", "BASH_NO_RETURN", "BASH_RETURN", "STD"]
+        self.mode = "STD"
         self._emergency_abort = False
         self.clients: list[Thread] = []
     def handleClient(self, conn, addr, server):
@@ -28,31 +32,45 @@ class Server(Socket):
         print(highlighter.highlight(f"{addr[0]} : {addr[1]} connected"))
         ended = False
         while self.running:
+            try:
               if self._emergency_abort:
-                  conn.send("end".encode())
-                  conn.close()
-                  ended = True
-                  
-                  exit()
-            #   if not ended:
-              c = conn.recv(self.MX_BYTES).decode("utf-8")
-              print()
-              if c == "end" and not ended:
-                  conn.send("OK".encode())
-                  conn.close()
-                  ended = True
-              c_a = c.split(" ")
-              try:
-                s_ = sb.run(c_a,capture_output=True)
-              except Exception as e:
-                  if not ended:
-                      conn.send(f"Error {e!r}".encode())
-                      break
-              else:   
-                if s_.stdout.decode().strip() == "":
-                   s_.stdout = b"Failed to attain output"
-                #    print(True)
-                conn.send(s_.stdout)
+                    conn.close()
+                    exit()
+              else:
+                c: str = conn.recv(self.MX_BYTES).decode()
+                if "§" in c:
+                    c = c.replace("§", "")
+                csp = c.split(" ")
+
+                if c == "end":
+                     print(
+                     highlighter.highlight(f"{addr[0]} disconnected")
+                     )
+                     conn.send("OK".encode())   
+                     conn.close()
+                     break
+                elif csp[0].strip() == "switch":
+                    if csp[1].upper().strip() in self.modes:
+                        self.mode = csp[1]
+                    else:
+                        conn.send(b"NOT VALID MODE")
+                    ...
+                else:
+                    if c.strip().__len__() != 0:
+                        if self.mode == "STD":
+                            print(highlighter.highlight(f"{addr[0]} : {addr[1]} said {c}"))
+                        elif self.mode == "BASH_NO_RETURN":
+                            os.system(c)
+                        elif self.mode == "BASH_RETURN":
+                            output = sb.run(c, capture_output=True)
+                            conn.send(output.stdout)
+                        elif self.mode == "PYTHON":
+                            rt = exec(c)
+                            conn.send(bytes(rt, "utf-8"))
+                    
+                conn.send(b"OK")
+            except Exception:
+                break
     def start(self):
         ...
         try:
@@ -62,10 +80,13 @@ class Server(Socket):
             self.socket.bind((IP, PORT))
             self.socket.listen()
             while self.running:
-                connection, address = self.socket.accept()
-                client = Thread(target=self.handleClient,args=(connection, address, ADDR))
-                client.start()
-                self.clients.append(client)
+                try:
+                    connection, address = self.socket.accept()
+                    client = Thread(target=self.handleClient,args=(connection, address, ADDR))
+                    client.start()
+                    self.clients.append(client)
+                except KeyboardInterrupt:
+                    raise Exception
                 ...
         except Exception as e:
             self._emergency_abort = True
@@ -74,6 +95,7 @@ class Server(Socket):
             highlighter.error("Connection closed due to error")
             highlighter.error(f"{e!r}",True)
     ...
+
 
 class Client(Socket):
     
@@ -88,29 +110,30 @@ class Client(Socket):
             # print(machine_data)
             machine_name = machine_data[1]
             machine_local_ipv4 = machine_data[0]
-            while self.running: 
+            while self.running and is_alive(self.socket): 
                 try:
-                    data = input(f"{machine_name} $ ")
-                    if data == "clear":
-                        os.system("clear")
-                    elif data == "exit":
-                        self.send("end")
-                        msg= self.recive()
-                        if msg == "OK":
-                            exit()
-                    self.send(data.strip())
-                    data = self.recive()
-                    if data == "end":
-                        self.socket.close()
-                        highlighter.error("Server ended session")
-                        break
-                    else :
-                        print(data)
+                    if is_alive(self.socket):
+                        data = input(f"{machine_name} $ ")
+                        # self.socket.send(data.encode())
+                        
+                        function = CWSHELL_INTERPRETER.see(data)
+                        if function is not False:
+                            function(self.socket)
+                        else:
+                            self.socket.send(data.encode())
+                            rdata = self.socket.recv(1024).decode()
+                            print(rdata)
+                            
+                    else:
+                        raise Exception("SERVER CLOSED CONNECTION")
+
                 except KeyboardInterrupt:
-                    print("")
+                    highlighter.error("KeyboardInterrupt! Input was not recorded")
+                    # exit()
                     ...
                 ...
             return 
         except Exception as e:
-            highlighter.error("Error occured soo deep in the application that we can't display it : (", True)
+            self.socket.send(b"end")
+            highlighter.error(f"{e!r}", True)
         ...
