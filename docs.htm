@@ -1,0 +1,181 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
+      .ol li {
+        list-style: none;
+        text-align: left;
+        padding: 10px;
+      }
+      .hovr li:hover {
+        border: 1px solid rgba(0, 0, 0, 0.263);
+        background-color: rgba(0, 0, 0, 0.077);
+      }
+      .wborders li {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+
+      }
+      #arrow {
+        transition: all 1s;
+      }
+      .ol li::first-letter {
+        font-size: 20px;
+        font-weight: bolder;
+        font-family: "Fredericka the Great";
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Fredericka the Great";
+      }
+      @media only screen and (max-width: 767px) {
+        #heading {
+          font-size: 30px;
+        }
+      }
+      @media screen and (max-width:991px){
+        #arrow {
+          transform: rotateZ(90deg);
+        }
+      }
+      sb {
+        font-weight: bolder;
+        font-family: "Fredericka the Great";
+      }
+      .fx {
+          position: fixed;
+          padding: 0;
+      }
+     #cont {
+      position: sticky;
+     }
+    </style>
+  </head>
+  <body class="container" style="padding: 10px">
+    <div id="cont">
+    <h1 id="heading">CWShell v2.0 Documentation</h1>
+    <hr />
+    </div>
+    <div class="row">
+      <div class="col" id="column1">
+        <!-- <h2></h2> -->
+        <ul class="ol hovr wborders fx" id="contents">
+          <h2>Contents</h2>
+        </ul>
+      </div>
+
+      <div class="col-md-9 p-5" id="content">
+        Hello and welcome to CWShellv2.0 Documentation. See the contents to browse for tutorials.
+        <br>
+          <span class="material-symbols-outlined" style="font-size: 50px;" id="arrow">
+            subdirectory_arrow_left
+          </span>
+      </div>
+    </div>
+
+    <script>
+      const Tutorials = {
+        add(heading_name, content) {
+           this[heading_name] = content
+        },
+      };
+      
+      Tutorials.add("Getting the basics", `
+      Welcome to CWShell's documentation's first chapter where you will learn how to use CWShell like a beginner and then how to use 
+      it like a pro. 
+      <hr/>
+      <h3>Starting the application</h3>
+      <hr/>
+      For Unix-Based-OS users, the file you will download will be a Unix Executable itself so you just need to 
+      click on it or open it in the terminal and all will be well.
+      <br>
+      <br>
+      For DOS and Windows users, you will get an <code>.exe</code> file that you can open on its on or can run it from
+      CMD/PowerShell. 
+      <br>
+      <br>
+      If you're using a custom OS or are keen to edit the code, you'll have to compile the source yourself. Download <a href="https://www.python.org/">Python</a>
+      and then download the CWShell Source. In the <code>src</code> directory you will find a <code>requirments.txt</code>, download all those modules 
+      and then run the python file. If you want to compile the source into an application we recommend using pyinstaller: <code>pyinstaller --onefile app.py</code>
+      <hr/>
+      <h3>Basic Commands</h3>
+      <hr/>
+      <ul class="ol">
+
+      <li>
+        <code>info:</code>
+        <br>
+        <sb>Usage:</sb> The info command basically returns the computer's information depending on what you asked for.
+        For example a user want the IPV4 address of his machine so that he can start a server, how would he find the address?
+        One solution is to go to the terminal and type <code>"ipconfig"</code>, <code>"ifconfig"</code> or <code>"hostname"</code>. 
+        Another way is to go to the CWShell application and type info -i or info --ipv4.
+        <br/>
+        <sb>Arguments:</sb>
+        <br/>
+        <code>-i (--ipv4)</code>: As you might have guessed, this returns the ipv4 address of the machine. If you don't
+        know about ipv4 address we suggest you look into them before continuing.
+        <br/>
+        <code>-n (--name)</code>: This returns the name of the machine, meaning the name using which the internet recognises you.
+        <hr>
+      </li>   
+
+      <li>
+        <code>exit:</code>
+        <br>
+        <sb>Usage:</sb> Every single person who has been introduced to the linux shell would know what this command it. Basically
+        it exits the application without another word. Let us see its arguments
+        <sb>Arguments:</sb>
+        <br/>
+        <code>-f (--force)</code>: Using this parameter you can forcefully exit the application and delete the process. Syntax is <code>exit -f</code> or <code>exit --force</code>.
+        <br>
+        <code>-r (--reload)</code>: Using this parameter is not really recommended because it it currently not so fast. The reload parameter exits the application and starts it again
+        such that everything that was done in the previous session is just regarded as a bad dream. Unfortunatly while trying to restart the application, it might duplicate processes 
+        making your computer slow. This problem is still under removal. Syntax is <code>exit -r</code> or <code>exit --reload</code>.
+        <hr>
+        <small>
+          <sb>Please note that typing <code>-letter</code> is equivilant to typing <code>--command</code>, meaning that typing <code>info -n</code> is equivalant to typing <code>info --name</code> 
+            they are the same parameters only made longer for readibility though it might be important to note that long names i.e <code>--command</code> might be
+             a few miliseconds 
+            slower than small names i.e <code>-letter</code> because CWShell has to search deep in the command enviornment to find the long parameter names.
+          <sb>
+        </small>
+
+      </li>
+      </ul>
+      <h3>Congratulations! You can now start the CWShell application and can extract info/exit application.<h3>
+      `)
+      Tutorials.add("Pop", "T")
+      // Adding the tutorials to the HTML Markup via DOM
+      const element = document.getElementById("contents");
+      const content_container = document.getElementById("content");
+      for (prop in Tutorials) {
+        if (prop != "add") {
+          const EL = document.createElement("li");
+          EL.innerText = prop;
+          const CValue = Tutorials[prop]
+          EL.addEventListener("click", (e) => {
+            content_container.innerHTML = CValue
+            console.log("Changed")
+            // console.log(Tutorials[prop])
+          });
+          element.appendChild(EL);
+        }
+      }
+    </script>
+  </body>
+</html>
