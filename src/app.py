@@ -1,5 +1,6 @@
 #!/opt/homebrew/bin/python3
-from commands import loop, highlighter
+from commands import loop
+from cli import highlighter
 from utilities import Connected
 def error_handler():
         highlighter.warn("You are not connected to the internet, do you still want to launch CWShell? Please note that a lot of the commands might not work")

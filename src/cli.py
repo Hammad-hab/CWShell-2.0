@@ -14,7 +14,7 @@ Print.run("-p","Hello World!")
 """
 from termcolor import colored
 import keyword, sys
-from utilities import is_ipv4
+from utilities import is_ipv4, getOS
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -130,6 +130,9 @@ class Command:
 class CommandEnviornment:
     def __init__(self) -> None:
         self.commands: dict[Command] = {}
+        self.spec_var = {
+            "$LAST_OUTPUT": "None"
+        }
         pass
     def add(self, command: Command, *commands) :
             self.commands[command.name] = command
@@ -138,10 +141,14 @@ class CommandEnviornment:
                      self.commands[c.name] = c
 
     def getFromUnixStyle(self, unix: str):
+        # for spc_var, value in self.spec_var.items():
+        #     unix = unix.replace(spc_var, value)
+        
         command = unix.split(" ")
         command = [x.strip() for x in command]
-        name = command[0]
+        name = command[0].strip()
         params = command[1:]
+        params = [x.strip() for x in params if x.__len__() > 0]
         return (name, params)
         ...
     def help(self):
@@ -152,7 +159,6 @@ class CommandEnviornment:
         return Help
         ...
     def findrun(self, name: str, *params):
-
              return self.commands[name].__run__(*params)
     ...
 
@@ -185,13 +191,20 @@ class CommandLoop:
         print(self.welcomePrompt)
         while self.running:
             try:
-                data = input(self.prompt)
+                data = input(self.prompt).strip()
                 if data.strip().__len__() > 0:
                     fdata = list(self.env.getFromUnixStyle(data))
                     if fdata[0].lower().strip() == "help":
                         self.env.help()
                         continue
                         ...
+                    elif fdata[0].lower().strip() == "clear":
+                        if getOS() == "Linux" or getOS() == "MacOS":
+                            __import__("os").system("clear")
+                        else:
+                            __import__("os").system("cls")
+                            
+                            
                     else:
                         if fdata[1].__len__() < 1:
                             fdata[1] = ["-h"]
@@ -253,3 +266,6 @@ class SyntaxHighlighter:
     
     ...
 highlighter = SyntaxHighlighter()
+
+Environment = CommandEnviornment()
+loop = CommandLoop(CommandEnviornment=Environment, prompt="🐚 ")
