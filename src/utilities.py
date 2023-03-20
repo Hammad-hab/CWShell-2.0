@@ -33,7 +33,7 @@ def search(entries):
 
 def GetIP() -> str:
     if getOS() == "Linux":
-            # linux
+        # linux
         ...
     elif getOS() == "MacOS":
         # OS X
@@ -46,18 +46,18 @@ def GetIP() -> str:
     return ip.stdout.decode().removesuffix("\n")
 
 
-def getOS() -> str:
-        from sys import platform
-        if platform == "linux" or platform == "linux2":
-            return "Linux"
-            ...
-        elif platform == "darwin":
-            # OS X
-           return "MacOS"
-        elif platform == "win32":
-            # Windows...
-            return "Windows"
-            ...
+def getOS():
+    from sys import platform
+    if platform == "linux" or platform == "linux2":
+        return "Linux"
+        ...
+    elif platform == "darwin":
+        # OS X
+        return "MacOS"
+    elif platform == "win32":
+        # Windows...
+        return "Windows"
+        ...
 
 
 def Connected() -> bool:
@@ -69,7 +69,7 @@ def Connected() -> bool:
     ...
 
 
-def is_ipv4(ipv4 : str | bytes):
+def is_ipv4(ipv4: str | bytes):
     try:
         IPV4 = ipaddress.ip_address(ipv4)
     except:
@@ -94,6 +94,79 @@ def locate_file(filename):
     print("FOR OPEN-SOURCE ONLY")
     os.chdir("/")
     LIST = os.listdir()
-    # for dir in LIST:
-       # if os.path.isdir(dir):
-            # l =
+
+
+def observe_and_return_verb(sentence: str):
+    """
+    This is a really exotic and funny function. It basically searches for certain symbols in the clients messages and then returns the
+    verb that should describe it. Its implementation isn't that complex, just an if condition checking for exclamation marks, question 
+    marks et cetera. A combination of symbols i.e "?!" could lead to other outputs such as "urgently inquires", you see, it's really 
+    interesting. This is where the fun part drops in: if you send text based emojis i.e :), :(, it adds the name of the emotion and
+    then adds the verb "says". The emojis it currently supports are as follows:
+     _____________________________________________________________________
+    |  Emoji  |    Name    |                    Output                    |
+    |_________|____________|______________________________________________|
+    |  :)     |Smily face  |  <ipaddress>:<port> smiles and says <message>|
+    |  :(     |Sad   face  |  <ipaddress>:<port> sobs and says <message>  |
+    |  >:(    |angry face  |  <ipaddress>:<port> frowns and says <message>|
+    |  ;(     |winking face|  <ipaddress>:<port> winks and says <message> |
+    |  ~_~    |crying face |  <ipaddress>:<port> crys and says <message>  |
+    |_________|____________|______________________________________________|
+    """
+    
+
+    SYMB = {
+        "?!": "shouts and asks",
+        "!?": "urgently inquires",
+        "??": "inquires",
+        "?": "asks",
+        "!": "exclaims",
+        ">:(": "frowns and says",
+        ":(": "sobs and says",
+        ":)": "smiles and says",
+        ";)": "winks and says",
+        "~_~": "crys and says"
+    }
+    for symb, description in SYMB.items():
+        if symb in sentence:
+            return description
+    return "says"
+    ...
+
+
+def install_packages():
+    """ 
+    This command was not used in the CWSHELL code. It is a utility made for open-source users so that they can download all the 
+    packages with convienience and so that they do not have to download every package manually. To use this command, navigate 
+    to the src directory and then enter the REPL by typing “python3“. After entering the REPL, run “from utlitilies import 
+    install_packages“ and then execute the command.
+    NOTE:
+    Make sure you are in the source directory because the src directory is not in the sys.path list and because 
+    this command needs the “requirements.txt“ to function.
+    """
+    items = os.listdir()
+    if "requirements.txt" not in items:
+        raise FileNotFoundError("This function needs requirments.txt to work. You might have deleted the file, if not, then install the software source again or get another copy of \
+            requirements.txt from the github repo.")
+    else:
+        with open("requirements.txt", "r") as f:
+            lines = f.readlines()
+            OS = getOS()
+
+            for line in lines:
+                if len(line.strip()) == 0:
+                    continue
+                if OS == "MacOS" or OS == "Linux":
+                    os.system(f"pip install {line}")
+                    return 1
+                elif OS == "Windows":
+                    print("This command may or may not work on windows depending on whether the pip executable in in the enviornment variables or not. Please ensure that before continuing")
+                    input("Press enter to continue")
+                    os.system(f"pip install {line}")
+                    return 0
+
+            raise ValueError(
+                "THE FILE REQUIRMENTS.TXT IS EMPTY. REVIVE THE CONTENTS OR ATTAIN A NEW COPY OF THE FILE FROM THE GITHUB REPO")
+
+            ...
+    ...

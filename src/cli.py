@@ -13,8 +13,10 @@ def log(*args):
 Print.run("-p","Hello World!")
 """
 from termcolor import colored
-import keyword, sys
+import keyword
+import sys
 from utilities import is_ipv4, getOS
+
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -22,6 +24,7 @@ def try_ignore(function, *args, **kwargs):
     except:
         return None
     ...
+
 
 class Map:
     def __init__(self, cmd_name) -> None:
@@ -38,6 +41,7 @@ class Map:
         self.base_str = f"usage {self.command}:"
         self.attribs = {
         }
+
     def addParam(self, param_name, description, param_long=None):
         """
         This method adds information about a commands parameter. 
@@ -56,13 +60,14 @@ class Map:
         self.base_str += f"\n\t{param_name} {f'[{param_long}]' if param_long is not None else ''}: {description}"
         ...
 
+
 class Command:
     def __init__(self, command_info: Map) -> None:
         """
         The class used for creating commands. To create a command you need its information which is genereated by the 
         Map class. 
         Each command has a "-h" ("--help") command by default.
-        
+
         Arguments:
             command_info: the information of the command i.e class Map
         Example:
@@ -74,7 +79,7 @@ class Command:
         self.name = command_info.command
         self.parameters = command_info.attribs
         self.__help__ = command_info.base_str
-        
+
         pass
 
     def help(self):
@@ -114,18 +119,19 @@ class Command:
         try:
             return self.parameters[parameter]["function"](*args)
         except KeyError as e:
-           for param_n, paramobj in self.parameters.items():
-               name = paramobj["long_parameter"]
-               if parameter == name:
-                   returnV = self.parameters[param_n]["function"](*args)
-                   return returnV
-               elif parameter == "-h" or parameter == "--help":
-                   return self.help()
+            for param_n, paramobj in self.parameters.items():
+                name = paramobj["long_parameter"]
+                if parameter == name:
+                    returnV = self.parameters[param_n]["function"](*args)
+                    return returnV
+                elif parameter == "-h" or parameter == "--help":
+                    return self.help()
 
-               else:
-                   continue
-           raise ParameterNotFound(e.args)
+                else:
+                    continue
+            raise ParameterNotFound(e.args)
         ...
+
 
 class CommandEnviornment:
     def __init__(self) -> None:
@@ -134,16 +140,17 @@ class CommandEnviornment:
             "$LAST_OUTPUT": "None"
         }
         pass
-    def add(self, command: Command, *commands) :
-            self.commands[command.name] = command
-            if commands.__len__()  > 0:
-                for c in commands:
-                     self.commands[c.name] = c
+
+    def add(self, command: Command, *commands):
+        self.commands[command.name] = command
+        if commands.__len__() > 0:
+            for c in commands:
+                self.commands[c.name] = c
 
     def getFromUnixStyle(self, unix: str):
         # for spc_var, value in self.spec_var.items():
         #     unix = unix.replace(spc_var, value)
-        
+
         command = unix.split(" ")
         command = [x.strip() for x in command]
         name = command[0].strip()
@@ -151,21 +158,23 @@ class CommandEnviornment:
         params = [x.strip() for x in params if x.__len__() > 0]
         return (name, params)
         ...
+
     def help(self):
         Help = ""
         for name, command in self.commands.items():
-              h = command.help()
-              Help += (h if h is not None else "")
+            h = command.help()
+            Help += (h if h is not None else "")
         return Help
         ...
+
     def findrun(self, name: str, *params):
-             return self.commands[name].__run__(*params)
+        return self.commands[name].__run__(*params)
     ...
 
 
 class CommandLoop:
     def __init__(self, *, CommandEnviornment: CommandEnviornment, prompt=">>> ", autorun=False) -> None:
-        self.welcomePrompt = f"CWShell v2.0. Application is using PythonV{sys.version[0: sys.version.index('(') - 1]}. Type “help“ to get more info" 
+        self.welcomePrompt = f"CWShell v2.0. Application is using PythonV{sys.version[0: sys.version.index('(') - 1]}. Type “help“ to get more info"
         self.prompt = prompt
         self.running = True
         self.highlighter = SyntaxHighlighter()
@@ -175,18 +184,18 @@ class CommandLoop:
         if autorun:
             self.start()
         pass
- 
-    
+
     def on_error(self, error):
-       def f(function):
-            self.error[error] = function     
-       return f
+        def f(function):
+            self.error[error] = function
+        return f
+
     def g_exception(self, e: Exception):
         nm = repr(e)
         nm = nm[0: nm.index("(")]
         return str(nm)
         ...
-    
+
     def start(self):
         print(self.welcomePrompt)
         while self.running:
@@ -202,9 +211,8 @@ class CommandLoop:
                         if getOS() == "Linux" or getOS() == "MacOS":
                             __import__("os").system("clear")
                         else:
-                            __import__("os").system("cls")
-                            
-                            
+                            __import__("os").system("clear")
+
                     else:
                         if fdata[1].__len__() < 1:
                             fdata[1] = ["-h"]
@@ -212,60 +220,77 @@ class CommandLoop:
                         try:
                             returnV = self.env.findrun(fdata[0], *fdata[1])
                         except Exception as e:
-                            try_ignore(lambda e: self.error[self.g_exception(e)](e), e)
+                            try_ignore(
+                                lambda e: self.error[self.g_exception(e)](e), e)
                             self.highlighter.error(f"{e!r}", fancy=True)
                             # raise
                         else:
                             if returnV:
                                 print(returnV)
                             self.prev = data
-                        
+
             except KeyboardInterrupt as e:
-                self.highlighter.error(f"\n{e!r} input not recorded", fancy=True)
+                self.highlighter.error(
+                    f"\n{e!r} input not recorded", fancy=True)
                 pass
         ...
 
     ...
-    
+
+
 class ParameterNotFound(KeyError):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
     ...
 
+
 class SyntaxHighlighter:
     def __init__(self) -> None:
         pass
-    def highlight(self,strn:str):
-        arr = strn.split(" ")
-        
-        for element in arr:
-            if keyword.iskeyword(element):
-                index = arr.index(element)
-                arr[index] = colored(element, "magenta",attrs=["bold"])
-            elif element.isdigit() or element.isdecimal() or is_ipv4(element):
-                index = arr.index(element)
-                arr[index] = colored(element, "green",attrs=["bold"])
-            elif element.isalpha():
-                index = arr.index(element)
-                arr[index] = colored(element, "blue",attrs=["bold"])
-        return "".join([x + " " for x in arr])
-    def error(self, string:str, fancy=False, output=True):
+
+    def highlight(self, strn: str, # *, using="termcolor" # this is under implementation
+                 ):
+        # using = using.lower().strip()
+        # if using == "termcolor":
+            arr = strn.split(" ")
+            for element in arr:
+                if keyword.iskeyword(element):
+                    index = arr.index(element)
+                    arr[index] = colored(element, "magenta", attrs=["bold"])
+                elif element.isdigit() or element.isdecimal() or is_ipv4(element):
+                    index = arr.index(element)
+                    arr[index] = colored(element, "green", attrs=["bold"])
+                elif element.isalpha():
+                    index = arr.index(element)
+                    arr[index] = colored(element, "blue", attrs=["bold"])
+            return "".join([x + " " for x in arr])
+        # elif using == "rich":
+            ...
+            # return self._rich_higlight(strn)
+
+
+    def error(self, string: str, fancy=False, output=True):
         colorString = self._stdout(string, "red", fancy, output)
         return colorString
         ...
+
     def _stdout(self, string, color, fancy=False, output=True):
-        colorString = colored(string, color, None if fancy is False else f"on_{color}",attrs=["bold"])
+        colorString = colored(
+            string, color, None if fancy is False else f"on_{color}", attrs=["bold"])
         if output is True:
             print(colorString)
-        return colorString 
-        ...
-    
-    def warn(self, string:str, fancy=False, output=True):
-        colorString = self._stdout(string,"yellow",fancy, output)
         return colorString
-    
+        ...
+
+    def warn(self, string: str, fancy=False, output=True):
+        colorString = self._stdout(string, "yellow", fancy, output)
+        return colorString
+
     ...
+
+
 highlighter = SyntaxHighlighter()
 
 Environment = CommandEnviornment()
 loop = CommandLoop(CommandEnviornment=Environment, prompt="🐚 ")
+

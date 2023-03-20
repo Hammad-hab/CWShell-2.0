@@ -11,12 +11,14 @@ class Server:
         
     def handleClient(self, conn: Socket, addr: tuple[str | bytes | int]): 
         INT = CWSH_INT(self.sk, self.addr)
-        while self.running and conn.is_alive():
+        while self.running:
             try:
                 data = conn.recive()
                 data = data.replace("§", "")
                 if data == "END":
                     conn.kill()
+                    self.print(addr, action="disconnected")
+                    
                     return None
                 if data:
                     return_data = INT.read(data)
@@ -25,13 +27,12 @@ class Server:
                     return_data = ""
             except Exception as e:
                 highlighter.error(f"An error occured. {e}")
-
         return return_data
         ...
     
-    def print(self, addr):
+    def print(self, /, addr, *, action="connected"):
         print(
-        highlighter.highlight(f"{addr[0]} : {addr[1]} connected")           
+        highlighter.highlight(f"{addr[0]} : {addr[1]} {action}")           
         )
     
     def _newClientThread(self, connection, address):
@@ -55,7 +56,7 @@ class Server:
                         conn, addr = self.sk.accept()
                         self.print(addr)
                         self._newClientThread(conn, addr)
-                    except Exception:
+                    except (Exception, KeyboardInterrupt):
                         self.sk.kill()
                         raise
             except Exception as e:

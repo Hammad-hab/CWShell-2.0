@@ -3,7 +3,7 @@ from cli import highlighter
 from threading import Thread
 import subprocess as sb
 import os, subprocess
-from utilities import is_alive
+from utilities import is_alive, observe_and_return_verb
 
 # from interpreter import CWSHELL_INTERPRETER
 class Socket():
@@ -117,7 +117,7 @@ class CWSH_INT:
         @self._addMode("STD")
         def standard(text):
             print(
-            highlighter.highlight(f"{self.address[0]} : {self.address[1]} says {text}")
+            highlighter.highlight(f"{self.address[0]} : {self.address[1]} {observe_and_return_verb(text)} {text}")
             )
             return "OK"
 
