@@ -5,7 +5,6 @@ import ipaddress
 import subprocess as sb
 import os
 
-
 def search(entries):
     tried = []
     using = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -170,3 +169,5 @@ def install_packages():
 
             ...
     ...
+
+

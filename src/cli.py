@@ -16,7 +16,7 @@ from termcolor import colored
 import keyword
 import sys
 from utilities import is_ipv4, getOS
-
+# import keyboard as k
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -136,10 +136,26 @@ class Command:
 class CommandEnviornment:
     def __init__(self) -> None:
         self.commands: dict[Command] = {}
-        self.spec_var = {
-            "$LAST_OUTPUT": "None"
-        }
+        self.varz = {}
+        self._declare_("$OUTPUT", "0")
         pass
+    
+    def _declare_(self, name: str, value: str | int | bool):
+        if not name.startswith("$"):
+            raise ValueError("Name of a variable must begin with a “$“ sign")
+        self.varz[name] = value
+        ...
+    
+    def _read_(self, name):
+        for attribute, feature in self.varz.items():
+            print(name)
+            if name == attribute:
+                return feature
+            else:
+                continue
+        raise ValueError(f"There is no variable named {name}")
+        ...
+    
 
     def add(self, command: Command, *commands):
         self.commands[command.name] = command
@@ -148,9 +164,9 @@ class CommandEnviornment:
                 self.commands[c.name] = c
 
     def getFromUnixStyle(self, unix: str):
-        # for spc_var, value in self.spec_var.items():
-        #     unix = unix.replace(spc_var, value)
-
+        for spc_var, value in self.varz.items():
+            unix = unix.replace(spc_var, value if value is not None else "0")
+        
         command = unix.split(" ")
         command = [x.strip() for x in command]
         name = command[0].strip()
@@ -168,7 +184,9 @@ class CommandEnviornment:
         ...
 
     def findrun(self, name: str, *params):
-        return self.commands[name].__run__(*params)
+        run = self.commands[name].__run__(*params)
+        self._declare_("$OUTPUT", run)
+        return run
     ...
 
 
@@ -212,7 +230,15 @@ class CommandLoop:
                             __import__("os").system("clear")
                         else:
                             __import__("os").system("clear")
-
+                    # elif fdata[0].lower().strip() == "read":
+                    #         if fdata[1].__len__() > 0:
+                    #             try:
+                    #                 print(self.env._read_(fdata[1]))
+                    #             except:
+                    #                 print(f"Cannot find any variable named {fdata[1]}")
+                    #         else:
+                    #             print(f"Cannot find any variable named {fdata[1]}")
+                    #         ...
                     else:
                         if fdata[1].__len__() < 1:
                             fdata[1] = ["-h"]
@@ -227,6 +253,7 @@ class CommandLoop:
                         else:
                             if returnV:
                                 print(returnV)
+                                self.env._declare_("$LAST_COMMAND", data)
                             self.prev = data
 
             except KeyboardInterrupt as e:

@@ -14,6 +14,7 @@ cname = Command(cname_map)
 @cname.on("-i")
 def ipv4(*args):
         ip = GetIP()
+        
         return ip
 ...
 @cname.on("-n")

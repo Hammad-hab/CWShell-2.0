@@ -19,7 +19,10 @@ class Socket():
             self.socket.close()
         else:
             return self.socket.close
-        
+    def murder(self):
+        self.socket.close()
+        del self
+    
     def recive(self) -> bytes | str:
         msg = self.socket.recv(Socket.MX_BYTES)
         return msg.decode(Socket.DEF_ENCODING)
@@ -134,6 +137,7 @@ class CWSH_INT:
         @self._addMode("BASH_RETURN")
         def bash_r(text):
             try:
+                highlighter.warn("Please note that the output of some functions might be sent to the server.")
                 data = subprocess.check_output(text.split(" ")).decode()
             except Exception as e:
                 return repr(e)

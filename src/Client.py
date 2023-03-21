@@ -11,16 +11,19 @@ class Client:
             
     def _loop(self):
         while self.sk.is_alive():
-            # print(self.sk.is_alive())
-            data = input(f"{self.addr[0]} $ ")
-            if data == "exit":
-                self.sk.send("END")
-                self.sk.kill()
-            else:   
-                self.sk.send(data)
-                Data = self.sk.recive()
-                Data = Data.replace("§", "")
-                print(Data)
+            try:
+                # print(self.sk.is_alive())
+                data = input(f"{self.addr[0]} $ ")
+                if data == "exit":
+                    self.sk.send("END")
+                    self.sk.kill()
+                else:   
+                    self.sk.send(data)
+                    Data = self.sk.recive()
+                    Data = Data.replace("§", "")
+                    print(Data)
+            except:
+                ...
             
             ...
         highlighter.error("SESSION ENDED")
