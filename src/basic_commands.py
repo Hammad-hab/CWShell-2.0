@@ -1,7 +1,7 @@
 from cli import Map, Command, highlighter
 from socket import gethostname
 from cli import Environment, loop
-from utilities import GetIP, locate_file
+from utilities import GetIP
 import os
 
 cname_map = Map("info")
@@ -37,7 +37,8 @@ def delete():
 Exit = Command(exit_map)
 @Exit.on("-f")
 def p(*args):
-    exit()
+    import sys
+    sys.exit()
 @Exit.on("-r")
 def r(*args):
     delete()
