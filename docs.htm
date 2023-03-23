@@ -57,20 +57,23 @@
         font-weight: bolder;
         font-family: "Fredericka the Great";
       }
-      .fx {
+      /* .fx {
           position: fixed;
           padding: 0;
-      }
-     #cont {
-      position: sticky;
-     }
+      } */
+/* 
+      @media only screen and (max-width: 776px) {
+
+      } */
     </style>
   </head>
   <body class="container" style="padding: 10px">
-    <div id="cont">
-    <h1 id="heading">CWShell v2.0 Documentation</h1>
+    <header id="cont">
+      <h1 id="heading">CWShell v2.0 Documentation</h1>
+      <small>The Best and (possibly only!) documentation of CWShell</small>
     <hr />
-    </div>
+    </header>
+
     <div class="row">
       <div class="col" id="column1">
         <!-- <h2></h2> -->
@@ -91,8 +94,12 @@
     <script>
       const Tutorials = {
         add(heading_name, content) {
-           this[heading_name] = content
+          if (content.trim().length === 0) {
+              content = "<b>Please stand by, the documentation is being written</b>"
+          }
+          this[heading_name] = content
         },
+
       };
       
       Tutorials.add("Getting the basics", `
@@ -115,9 +122,9 @@
       <hr/>
       <h3>Basic Commands</h3>
       <hr/>
-      <ul class="ol">
+      <!-- <ul class="ol">
 
-      <li>
+      <li>-->
         <code>info:</code>
         <br>
         <sb>Usage:</sb> The info command basically returns the computer's information depending on what you asked for.
@@ -132,9 +139,9 @@
         <br/>
         <code>-n (--name)</code>: This returns the name of the machine, meaning the name using which the internet recognises you.
         <hr>
-      </li>   
+        <!--</li>-->
 
-      <li>
+      <!--<li>-->
         <code>exit:</code>
         <br>
         <sb>Usage:</sb> Every single person who has been introduced to the linux shell would know what this command it. Basically
@@ -155,11 +162,76 @@
           <sb>
         </small>
 
-      </li>
-      </ul>
-      <h3>Congratulations! You can now start the CWShell application and can extract info/exit application.<h3>
+        <!--</li>-->
+      <!--</ul>-->
+      <h3>Congratulations! You can now start the CWShell application and can extract info/exit application. In the next chapter we will discuss some of the variables CWShell offers!<h3>
       `)
-      Tutorials.add("Pop", "T")
+      
+      Tutorials.add("Special Variables", `Welcome to lesson number two! In this chapter we will discuss some of the variables CWShell offers by default, 
+      as said in the end of the last lesson.
+      <hr>
+      <h3>The Rules for variable names</h3>
+      <hr>
+      Like BASH, SHELLScript <small><b>(and PHP, if you don't mind!)</b></small>, CWShell also uses the dollar sign (i.e “$“) to identify and
+      signify variables. An important point to be noted is that when refrencing variable (meaning when addressing them in commands), 
+      please consider case sensitivty.
+      <hr>
+      <h4>The <code>$OUTPUT</code> Variable</h4>
+      This is one of two global variables provided by CWShell. The two global variables are automatically set by CWShell when commands 
+      are executed. The $OUTPUT (intial value is 0 or None) stores the output of the last command that was called. For instance
+      if a user executes <code>info --ip</code>, the return value (i.e the ipv4 address) will be stored in the $OUTPUT variable. 
+      Now if the user executes <code>server -a $OUTPUT 5060</code> (<small>will be discussed in other chapters</small>), the 
+      CWShell interpreter will replace the <code>$OUTPUT</code> with it's respective value! See they are really handy so that the 
+      user doesn't have to type in everything every time he/she starts a server or connects to it!
+      <br>
+      <h4>The <code>$LAST_COMMAND</code> Variable</h4>
+      This variable is absolutly what it sounds like, it contains the last command that was executed. To use this variable,
+      just type in <code>$LAST_COMMAND</code> in the CWShell prompt and press enter to execute the last command again.
+      <hr>
+      <small>
+        <sb>
+        When you first start a fresh session of CWShell, this variable doesn't exist because you haven't executed any command yet so if you type in 
+      $LAST_COMMAND, you will only be greeted by a <code>KeyError</code> or <code>ValueError</code>.
+      </sb>
+
+      </small>
+      <hr>
+      <small>
+        <sb>It is worth noting that CWShells global variables are quite relatable to PHP's Super Globals. Another 
+          point to be noted is that CWShells variables are not actually like the variables in programming as they
+          are just properties of a dictionary (i.e <code>dict()</code>) not sections of the RAM.
+        </sb>
+
+      </small>
+      <hr>
+      <h4>Creating your own variables.</h4>
+      <hr>
+      To create your own variables, you have to use the similar-to-bash <code>set command</code>. 
+      Let's take a quick over veiw of the syntax:
+      <code>set [variable_name] [value] </code>.
+      If you have dealt with BASH and Shell before, you can skip this section because the command works in the exact same way. If you haven't
+      then this is how it works:
+      first you type in the name of the variable (that should begin with a $sign) then you have to type it's value. Now you can type that 
+      variable any where and get the required output.
+      <hr>
+      <small>
+        <sb>
+          Quick example: <br>
+          <code>
+              🐚 info -i (will return the ip address if you remeber)
+              <br/>
+              🐚 set $NAME $OUTPUT
+          </code>
+          <br>
+          You can print the output by using <code>exec_from --print [variable_name]<code>
+        </sb>
+        
+      </small>
+      `)
+      Tutorials.add("Starting a server", "")
+      Tutorials.add("Connecting to a server", "")
+      Tutorials.add("About execution modes", "")
+      Tutorials.add("...", "<h3>Working on it!</h3>")
       // Adding the tutorials to the HTML Markup via DOM
       const element = document.getElementById("contents");
       const content_container = document.getElementById("content");

@@ -3,13 +3,14 @@ Example:
 
 print_m =  Map("help")
 print_m.addParam("-pr", "prints raw strings")
-print_m.addParam("-p", "prints f-strings, byte-strings and every other type of strings, inculding raw strings", "--print")
+print_m.addParam(
+    "-p", "prints f-strings, byte-strings and every other type of strings, inculding raw strings", "--print")
 
 Print = Command(print_m)
 @Print.on("-p")
 def log(*args):
     print(*args)
-    
+
 Print.run("-p","Hello World!")
 """
 from termcolor import colored
@@ -17,6 +18,7 @@ import keyword
 import sys
 from utilities import is_ipv4, getOS
 # import keyboard as k
+
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -35,7 +37,8 @@ class Map:
         Example:
             print_m = Map("print")
             print_m.addParam("-pr", "prints raw strings")
-            print_m.addParam("-p", "prints f-strings, byte-strings and every other type of strings, inculding raw strings", "--print")
+            print_m.addParam(
+                "-p", "prints f-strings, byte-strings and every other type of strings, inculding raw strings", "--print")
         """
         self.command = cmd_name
         self.base_str = f"usage {self.command}:"
@@ -44,14 +47,15 @@ class Map:
 
     def addParam(self, param_name, description, param_long=None):
         """
-        This method adds information about a commands parameter. 
+        This method adds information about a commands parameter.
         Arguments:
             param_name: the name of the parameter
             description: the description that is to be displayed when "help" is executed
             param_long [optional]: it is the long name of the parameter, for example the long name of "-ls" is "--list".
         Example:
             print_m.addParam("-pr", "prints raw strings")
-            print_m.addParam("-p", "prints f-strings, byte-strings and every other type of strings, inculding raw strings", "--print")
+            print_m.addParam(
+                "-p", "prints f-strings, byte-strings and every other type of strings, inculding raw strings", "--print")
         """
         self.attribs[param_name] = {
             "description": description,
@@ -64,8 +68,8 @@ class Map:
 class Command:
     def __init__(self, command_info: Map) -> None:
         """
-        The class used for creating commands. To create a command you need its information which is genereated by the 
-        Map class. 
+        The class used for creating commands. To create a command you need its information which is genereated by the
+        Map class.
         Each command has a "-h" ("--help") command by default.
 
         Arguments:
@@ -109,7 +113,7 @@ class Command:
     def __run__(self, parameter, *args):
         parameter = parameter.strip()
         """
-        Runs the function with the provided arguments. 
+        Runs the function with the provided arguments.
         Arguments:
             parameter: The name of the parameter to which the next value is assigned
             value: The argument to pass into the function when it is executed.
@@ -139,13 +143,13 @@ class CommandEnviornment:
         self.varz = {}
         self._declare_("$OUTPUT", "0")
         pass
-    
+
     def _declare_(self, name: str, value: str | int | bool):
         if not name.startswith("$"):
             raise ValueError("Name of a variable must begin with a “$“ sign")
         self.varz[name] = value
         ...
-    
+
     def _read_(self, name):
         for attribute, feature in self.varz.items():
             print(name)
@@ -155,7 +159,6 @@ class CommandEnviornment:
                 continue
         raise ValueError(f"There is no variable named {name}")
         ...
-    
 
     def add(self, command: Command, *commands):
         self.commands[command.name] = command
@@ -166,7 +169,7 @@ class CommandEnviornment:
     def getFromUnixStyle(self, unix: str):
         for spc_var, value in self.varz.items():
             unix = unix.replace(spc_var, value if value is not None else "0")
-        
+
         command = unix.split(" ")
         command = [x.strip() for x in command]
         name = command[0].strip()
@@ -184,9 +187,30 @@ class CommandEnviornment:
         ...
 
     def findrun(self, name: str, *params):
-        run = self.commands[name].__run__(*params)
-        self._declare_("$OUTPUT", run)
-        return run
+
+        name_ = name.lower().strip()
+        if name_ == "help":
+            self.help()
+            ...
+        elif name_ == "clear":
+            if getOS() == "Linux" or getOS() == "MacOS":
+                __import__("os").system("clear")
+            else:
+                __import__("os").system("clear")
+        elif name_ == "set":
+            if params.__len__() > 0:
+                name = params[0].strip()
+                value = params[1]
+                if not name.startswith("$"):
+                    highlighter.error(
+                        f"Name of a variable must begin with $. Were you trying to type ${params[0]}?", fancy=True)
+                else:
+                    self._declare_(name, value)
+
+        else:
+            run = self.commands[name].__run__(*params)
+            self._declare_("$OUTPUT", run)
+            return run
     ...
 
 
@@ -221,40 +245,22 @@ class CommandLoop:
                 data = input(self.prompt).strip()
                 if data.strip().__len__() > 0:
                     fdata = list(self.env.getFromUnixStyle(data))
-                    if fdata[0].lower().strip() == "help":
-                        self.env.help()
-                        continue
+
+                    if fdata[1].__len__() < 1:
+                        fdata[1] = ["-h"]
                         ...
-                    elif fdata[0].lower().strip() == "clear":
-                        if getOS() == "Linux" or getOS() == "MacOS":
-                            __import__("os").system("clear")
-                        else:
-                            __import__("os").system("clear")
-                    # elif fdata[0].lower().strip() == "read":
-                    #         if fdata[1].__len__() > 0:
-                    #             try:
-                    #                 print(self.env._read_(fdata[1]))
-                    #             except:
-                    #                 print(f"Cannot find any variable named {fdata[1]}")
-                    #         else:
-                    #             print(f"Cannot find any variable named {fdata[1]}")
-                    #         ...
+                    try:
+                        returnV = self.env.findrun(fdata[0], *fdata[1])
+                    except Exception as e:
+                        try_ignore(
+                            lambda e: self.error[self.g_exception(e)](e), e)
+                        self.highlighter.error(f"{e!r}", fancy=True)
+                        # raise
                     else:
-                        if fdata[1].__len__() < 1:
-                            fdata[1] = ["-h"]
-                            ...
-                        try:
-                            returnV = self.env.findrun(fdata[0], *fdata[1])
-                        except Exception as e:
-                            try_ignore(
-                                lambda e: self.error[self.g_exception(e)](e), e)
-                            self.highlighter.error(f"{e!r}", fancy=True)
-                            # raise
-                        else:
-                            if returnV:
-                                print(returnV)
-                                self.env._declare_("$LAST_COMMAND", data)
-                            self.prev = data
+                        if returnV:
+                            print(returnV)
+                            self.env._declare_("$LAST_COMMAND", data)
+                        self.prev = data
 
             except KeyboardInterrupt as e:
                 self.highlighter.error(
@@ -275,26 +281,25 @@ class SyntaxHighlighter:
     def __init__(self) -> None:
         pass
 
-    def highlight(self, strn: str, # *, using="termcolor" # this is under implementation
-                 ):
+    def highlight(self, strn: str,  # *, using="termcolor" # this is under implementation
+                  ):
         # using = using.lower().strip()
         # if using == "termcolor":
-            arr = strn.split(" ")
-            for element in arr:
-                if keyword.iskeyword(element):
-                    index = arr.index(element)
-                    arr[index] = colored(element, "magenta", attrs=["bold"])
-                elif element.isdigit() or element.isdecimal() or is_ipv4(element):
-                    index = arr.index(element)
-                    arr[index] = colored(element, "green", attrs=["bold"])
-                elif element.isalpha():
-                    index = arr.index(element)
-                    arr[index] = colored(element, "blue", attrs=["bold"])
-            return "".join([x + " " for x in arr])
+        arr = strn.split(" ")
+        for element in arr:
+            if keyword.iskeyword(element):
+                index = arr.index(element)
+                arr[index] = colored(element, "magenta", attrs=["bold"])
+            elif element.isdigit() or element.isdecimal() or is_ipv4(element):
+                index = arr.index(element)
+                arr[index] = colored(element, "green", attrs=["bold"])
+            elif element.isalpha():
+                index = arr.index(element)
+                arr[index] = colored(element, "blue", attrs=["bold"])
+        return "".join([x + " " for x in arr])
         # elif using == "rich":
-            ...
-            # return self._rich_higlight(strn)
-
+        ...
+        # return self._rich_higlight(strn)
 
     def error(self, string: str, fancy=False, output=True):
         colorString = self._stdout(string, "red", fancy, output)
@@ -320,4 +325,3 @@ highlighter = SyntaxHighlighter()
 
 Environment = CommandEnviornment()
 loop = CommandLoop(CommandEnviornment=Environment, prompt="🐚 ")
-
