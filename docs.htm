@@ -152,7 +152,7 @@
         <br>
         <code>-r (--reload)</code>: Using this parameter is not really recommended because it it currently not so fast. The reload parameter exits the application and starts it again
         such that everything that was done in the previous session is just regarded as a bad dream. Unfortunatly while trying to restart the application, it might duplicate processes 
-        making your computer slow. This problem is still under removal. Syntax is <code>exit -r</code> or <code>exit --reload</code>.
+        therefore making your computer slow. This problem is still under removal. Syntax is <code>exit -r</code> or <code>exit --reload</code>.
         <hr>
         <small>
           <sb>Please note that typing <code>-letter</code> is equivilant to typing <code>--command</code>, meaning that typing <code>info -n</code> is equivalant to typing <code>info --name</code> 
@@ -181,7 +181,7 @@
       are executed. The $OUTPUT (intial value is 0 or None) stores the output of the last command that was called. For instance
       if a user executes <code>info --ip</code>, the return value (i.e the ipv4 address) will be stored in the $OUTPUT variable. 
       Now if the user executes <code>server -a $OUTPUT 5060</code> (<small>will be discussed in other chapters</small>), the 
-      CWShell interpreter will replace the <code>$OUTPUT</code> with it's respective value! See they are really handy so that the 
+      CWShell interpreter will replace the <code>$OUTPUT</code> with it's respective value! They are really handy so as the 
       user doesn't have to type in everything every time he/she starts a server or connects to it!
       <br>
       <h4>The <code>$LAST_COMMAND</code> Variable</h4>
@@ -190,7 +190,7 @@
       <hr>
       <small>
         <sb>
-        When you first start a fresh session of CWShell, this variable doesn't exist because you haven't executed any command yet so if you type in 
+        When you first start a fresh session of CWShell, this variable doesn't exist because you haven't executed any command yet, so if you type in 
       $LAST_COMMAND, you will only be greeted by a <code>KeyError</code> or <code>ValueError</code>.
       </sb>
 

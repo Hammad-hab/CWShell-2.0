@@ -16,9 +16,10 @@ Print.run("-p","Hello World!")
 from termcolor import colored
 import keyword
 import sys
-from utilities import is_ipv4, getOS
-# import keyboard as k
+from rich.console import Console
 
+console = Console(record=True)
+from utilities import is_ipv4, getOS
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -89,6 +90,7 @@ class Command:
     def help(self):
         print(self.__help__)
         ...
+     
 
     def on(self, param):
         """
@@ -109,7 +111,7 @@ class Command:
             ...
         return decorator
         ...
-
+     
     def __run__(self, parameter, *args):
         parameter = parameter.strip()
         """
@@ -148,6 +150,7 @@ class CommandEnviornment:
         if not name.startswith("$"):
             raise ValueError("Name of a variable must begin with a “$“ sign")
         self.varz[name] = value
+        # self._declare_("$ALL_VARZ", str(self.varz))
         ...
 
     def _read_(self, name):
@@ -165,7 +168,7 @@ class CommandEnviornment:
         if commands.__len__() > 0:
             for c in commands:
                 self.commands[c.name] = c
-
+     
     def getFromUnixStyle(self, unix: str):
         for spc_var, value in self.varz.items():
             unix = unix.replace(spc_var, value if value is not None else "0")
@@ -185,6 +188,7 @@ class CommandEnviornment:
             Help += (h if h is not None else "")
         return Help
         ...
+ 
 
     def findrun(self, name: str, *params):
 
@@ -237,12 +241,11 @@ class CommandLoop:
         nm = nm[0: nm.index("(")]
         return str(nm)
         ...
-
     def start(self):
         print(self.welcomePrompt)
         while self.running:
             try:
-                data = input(self.prompt).strip()
+                data = console.input(self.prompt).strip()
                 if data.strip().__len__() > 0:
                     fdata = list(self.env.getFromUnixStyle(data))
 
@@ -254,7 +257,7 @@ class CommandLoop:
                     except Exception as e:
                         try_ignore(
                             lambda e: self.error[self.g_exception(e)](e), e)
-                        self.highlighter.error(f"{e!r}", fancy=True)
+                        self.highlighter.error("{!r}".format(e), fancy=True)
                         # raise
                     else:
                         if returnV:
@@ -264,7 +267,7 @@ class CommandLoop:
 
             except KeyboardInterrupt as e:
                 self.highlighter.error(
-                    f"\n{e!r} input not recorded", fancy=True)
+                    f"\n{e!r} input not recorded".format(e), fancy=True)
                 pass
         ...
 
@@ -283,8 +286,7 @@ class SyntaxHighlighter:
 
     def highlight(self, strn: str,  # *, using="termcolor" # this is under implementation
                   ):
-        # using = using.lower().strip()
-        # if using == "termcolor":
+
         arr = strn.split(" ")
         for element in arr:
             if keyword.iskeyword(element):

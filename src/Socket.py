@@ -46,8 +46,9 @@ class Socket():
         
     def accept(self):
         connection, addr = self.socket.accept()
-        connection = self.make_from_connection(connection)
-        return connection, addr
+        if addr[0] not in self.blacklist:
+            connection = self.make_from_connection(connection)
+            return connection, addr
         ...
     
     def connect(self, address, port):
@@ -94,7 +95,9 @@ class CWSH_INT:
             elif len(mode) > 0 and mode not in self.modes:
                 raise ValueError(f"BAD MODE {mode}")
             else:
+                # modestr = '\n'.join(self.modes)
                 self.c_mode = "STD"
+                # print(f"Switched to STD (Standard) mode. Following are the available modes:{modestr}")
         else:
             return text
         ...
@@ -138,7 +141,7 @@ class CWSH_INT:
         def bash_r(text):
             try:
                 highlighter.warn("Please note that the output of some functions might be sent to the server.")
-                data = subprocess.check_output(text.split(" ")).decode()
+                data = subprocess.check_output(text.split(" "), shell=True).decode()
             except Exception as e:
                 return repr(e)
             else:

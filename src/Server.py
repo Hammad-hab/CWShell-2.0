@@ -7,7 +7,6 @@ class Server:
         self.running = True
         self.addr = (address, int(port))
         self.clients: list[dict] = []
-        # self.INT = 
         
     def handleClient(self, conn: Socket, addr: tuple[str | bytes | int]): 
         INT = CWSH_INT(self.sk, self.addr)
