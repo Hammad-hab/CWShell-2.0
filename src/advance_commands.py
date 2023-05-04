@@ -1,7 +1,10 @@
 from cli import Map, Command, highlighter
 import os
 from cli import Environment, loop
+from rich.console import Console
+console = Console()
 execute_fm_map = Map("exec_from")
+
 execute_fm_map.addParam(
     "-f", """This parameter should be the name of the file. Basically this command is used to run cwshell commands that were written into a file, 
     kind of like Shellscript. Syntax: exec_from -f <filename>. 
@@ -42,4 +45,22 @@ def from_none_print(*args):
     else:
         print(print_d)
          
+    ...
+    
+wh_new_map = Map("whats_new")
+wh_new_map.addParam("-b", "Explains the updates breifly", "--breif")
+wh_new_map.addParam("-d", "Explains the updates in detail", "--detail")
+
+wh_new = Command(wh_new_map)
+@wh_new.on("-b")
+def breif():
+    from __updates__ import UPDATE_V2_1_BREIF
+    console.print(UPDATE_V2_1_BREIF)
+    ...
+    
+@wh_new.on("-d")
+def detailed():
+    from __updates__ import UPDATE_V2_1_LONG
+
+    console.print(UPDATE_V2_1_LONG)
     ...

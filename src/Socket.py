@@ -4,7 +4,7 @@ from threading import Thread
 import subprocess as sb
 import os, subprocess
 from utilities import is_alive, observe_and_return_verb
-
+from CWSLang import CWSH_LANG
 # from interpreter import CWSHELL_INTERPRETER
 class Socket():
     MX_BYTES = 1048576
@@ -75,9 +75,10 @@ class CWSH_INT:
         self.c_mode = "STD"
         self.modes = [
             "STD",
-            "PYTHON",
-            "BASH_RETURN",
-            "BASH_NO_RETURN"
+            # "PYTHON",
+            # "BASH_RETURN",
+            # "BASH_NO_RETURN",
+            "CWSH"
         ]
         self.socket = socket
         self.address = address
@@ -126,36 +127,13 @@ class CWSH_INT:
             highlighter.highlight(f"{self.address[0]} : {self.address[1]} {observe_and_return_verb(text)} {text}")
             )
             return "OK"
-
-        @self._addMode("PYTHON")
-        def python(text):
+        # other modes have been removed because of the all new cwshell interpreter
+        @self._addMode("CWSH")
+        def cwshell_best_executor(cmd):
+            cwsh = CWSH_LANG()
             try:
-                 data = eval(compile(text, "<string>", "exec"))
-            except Exception as e:
-                return repr(e)
-            else:
-                return data
-                
-            ...
-        @self._addMode("BASH_RETURN")
-        def bash_r(text):
-            try:
-                highlighter.warn("Please note that the output of some functions might be sent to the server.")
-                data = subprocess.check_output(text.split(" "), shell=True).decode()
-            except Exception as e:
-                return repr(e)
-            else:
-                return data if data.__len__() > 0 else "NO RETURN DATA"
-                
-            ...
-        @self._addMode("BASH_NO_RETURN")
-        def bash_r(text):
-            try:
-                data = os.system(text)
-            except Exception as e:
-                return repr(e)
-            else:
-                return "OK"
-                
+                return cwsh.parse(cmd)
+            except Exception as E:
+                return f"{E!r}"
             ...
     ...
