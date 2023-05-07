@@ -16,10 +16,7 @@ Print.run("-p","Hello World!")
 from termcolor import colored
 import keyword
 import sys
-from rich.console import Console
-
-console = Console(record=True)
-from utilities import is_ipv4, getOS
+from utilities import is_ipv4, getOS, input
 
 def try_ignore(function, *args, **kwargs):
     try:
@@ -132,7 +129,7 @@ class Command:
                     return returnV
                 elif parameter == "-h" or parameter == "--help":
                     return self.help()
-
+                
                 else:
                     continue
             raise ParameterNotFound(e.args)
@@ -245,13 +242,17 @@ class CommandLoop:
         print(self.welcomePrompt)
         while self.running:
             try:
-                data = console.input(self.prompt).strip()
+                # import readline
+                data = input(self.prompt).strip()
+                # if not data : print("\n")
+                    
                 if data.strip().__len__() > 0:
                     fdata = list(self.env.getFromUnixStyle(data))
 
                     if fdata[1].__len__() < 1:
                         fdata[1] = ["-h"]
                         ...
+                    
                     try:
                         returnV = self.env.findrun(fdata[0], *fdata[1])
                     except Exception as e:
@@ -264,11 +265,14 @@ class CommandLoop:
                             print(returnV)
                             self.env._declare_("$LAST_COMMAND", data)
                         self.prev = data
-
+                        
             except KeyboardInterrupt as e:
                 self.highlighter.error(
                     f"\n{e!r} input not recorded".format(e), fancy=True)
                 pass
+            # else:
+                # readline.add_history(data)
+                
         ...
 
     ...

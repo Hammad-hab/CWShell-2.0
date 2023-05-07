@@ -54,13 +54,13 @@ wh_new_map.addParam("-d", "Explains the updates in detail", "--detail")
 wh_new = Command(wh_new_map)
 @wh_new.on("-b")
 def breif():
-    from __updates__ import UPDATE_V2_1_BREIF
-    console.print(UPDATE_V2_1_BREIF)
+    from __updates__ import UPDATE_V2_1_1_BREIF
+    console.print(UPDATE_V2_1_1_BREIF)
     ...
     
 @wh_new.on("-d")
 def detailed():
-    from __updates__ import UPDATE_V2_1_LONG
+    from __updates__ import UPDATE_V2_1_1_LONG
 
-    console.print(UPDATE_V2_1_LONG)
+    console.print(UPDATE_V2_1_1_LONG)
     ...

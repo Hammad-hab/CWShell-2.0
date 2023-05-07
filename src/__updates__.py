@@ -1,4 +1,3 @@
-from rich.markdown import Markdown
 # As you might have precived, these long string are printed whenever the “whats_new“ command is called.
 # Altering them will result in the alteration of the output of the “whats_new“ command. Tinkering with
 # this is not at all appreiciated even though the application won't break!
@@ -37,5 +36,18 @@ Following list of commands that are supported:
 ⚪️ chmod
 ⚪️ echo (renders the result on your screen, not on the servers. This command uses the print function to achive this.)
 ⚪️ clear
+
+NOTE: VARIOUS FEATURES OF THE CWSH MODE ARE STILL PARTIALLY DEPENDENT ON SUBPROCESS MODULE AND OS BUT CWSH MODE
+FORCES THE RETURNING OF THE OUTPUT.
 """
 
+
+
+UPDATE_V2_1_1_BREIF = "Added more usablility"
+
+UPDATE_V2_1_1_LONG = """
+In CWShellv2.1.1 we have made minor usablility changes. Firstly, the shell new supports
+history meaning that the command that was peviously executed can be accessed again by pressing the 
+arrow up key and the arrow down key. 
+The cp AKA copy command has also been added.
+"""

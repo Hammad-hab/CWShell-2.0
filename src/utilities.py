@@ -4,7 +4,12 @@ import socket
 import ipaddress
 import subprocess as sb
 import os
+from rich.console import Console
+import readline
+import subprocess
 
+console = Console()
+initial_input = input
 def search(entries):
     tried = []
     using = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -170,4 +175,32 @@ def install_packages():
             ...
     ...
 
+def compile(*, onefile=True):
+    """
+    This command wasn't used in the CWSHELL code. It is a utility function made for open-source users so that
+    they can compile the file with ease. Following are the steps to use this command:
+    ⚪️ Naviagte to the CWSHELL source directory
+    ⚪️ Enter the python repl by typing “python3“ (or “python“ if you are using python 2)
+    ⚪️ Import this function from the repl by executing “from utilities import install_packages, compile“
+    ⚪️ First execute the function install_packages (READ THE INSTRUCTIONS OF “install_packages“. 
+                                                    In the repl you can do that by executing 
+                                                    help(install_packages))
+    ⚪️ Then execute the compile function and wait. The function will generate a dist folder and within the dist folder
+    will be your executable. Happy remote controlling!
+    
+    NOTE: This function is using pyinstaller.
+    """
+    process = subprocess.Popen(["pyinstaller", "--onefile" if onefile is True else "", "app.py"])
+    # if process.stdout:
+    os.rmdir("build")
+    os.remove("./app.spec")
+    # exit()
+    ...
 
+def input(str):
+    text = initial_input(str)
+    readline.add_history(text)
+    
+    return text
+    ...
+    

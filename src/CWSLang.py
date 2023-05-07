@@ -1,6 +1,5 @@
 import os
-
-
+import subprocess
 class CWSH_LANG:
     def __init__(self) -> None:
         self.Commands = {
@@ -11,7 +10,8 @@ class CWSH_LANG:
             "pwd":        self._cwshlang_create_function(os.getcwd, 0),
             "cat":        self._cwshlang_create_function(self._cat_implementation, 1),
             "echo":       self._cwshlang_create_forgiving_func(print),
-            "clear":      self._cwshlang_create_forgiving_func(lambda args: os.system("clear")),
+            "clear":      self._cwshlang_create_forgiving_func(lambda: os.system("clear")),
+            "cp":         self._cwshlang_create_function(self._copy_implementation, 2),
             "run_dormat": self._cwshlang_create_forgiving_func(lambda args: os.system(" ".join(args)))
         }
 
@@ -61,8 +61,15 @@ class CWSH_LANG:
         ...
 
     def _cat_implementation(*args: list[str]):
-        with open(*args[0], "r+") as f:
-            lines = f.readlines()
-            for line in lines:
-                print(line)
+        with open(args[1], "r+") as f:
+            lines = f.read()
+            # for line in lines:
+            return lines
+    def _copy_implementation(*args: list[str]):
+        print(args)
+        file:str = args[1]
+        newPath: str = args[2]
+        
+        _PROCESS = subprocess.Popen(["cp", file, newPath])
+        return _PROCESS.stdout
     ...

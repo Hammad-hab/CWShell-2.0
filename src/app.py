@@ -1,7 +1,7 @@
 #!/opt/homebrew/bin/python3
 from commands import loop
 from cli import highlighter
-from utilities import Connected
+from utilities import Connected, input
 
 
 def error_handler():

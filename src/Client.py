@@ -1,5 +1,6 @@
 from Socket import Socket
 from cli import Map, Command, highlighter
+from utilities import console, input
 
 class Client:
     def __init__(self, address, port) -> None:
@@ -21,7 +22,7 @@ class Client:
                     self.sk.send(data)
                     Data = self.sk.recive()
                     Data = Data.replace("§", "")
-                    print(Data)
+                    console.print(Data)
             except:
                 ...
             
