@@ -7,3 +7,7 @@ CWShell is a free open source project created in python to alow developers to qu
 Basically, the whole application's connection architecture is based on one class that's called `Socket` (See Socket.py) which has basic functions that let you send and recive data along with a property named ```.socket``` that gives you access to the socket that's being used.
 Not the best solution, but it works.
 
+### Reasources
+* [CWShell Website](https://hammad-hab.github.io/CWShell-2.0/)
+* [CWShell 1.0 & 1.2](https://hammad-hab.github.io/CWShell/)
+* [CWShell 2.0 Documentation](https://hammad-hab.github.io/CWShell-2.0/docs.htm)
