@@ -1,3 +1,9 @@
-# Free Remote Shell
+# CWShell 2.0
+## a bare minimum, open source implementation of remote control.
 
-It is currently under development.
+CWShell is a free open source project created in python to alow developers to quickly set up a remote control functionality for their application. No more hard core low level C-stuff is needed to get something up and running. Apart from that, CWShell also features various classes that'll help you create a two-way socket connection with ease and with control. Often in programming on observes that abstractions lead to lack of control. In CWShell there is a similar case but, in order to fix that problem, we allow users to both use the abstraction layer and the low-level socket according to their needs.
+
+###  How do we do this?
+Basically, the whole application's connection architecture is based on one class that's called `Socket` (See Socket.py) which has basic functions that let you send and recive data along with a property named ```.socket``` that gives you access to the socket that's being used.
+Not the best solution, but it works.
+
