@@ -11,3 +11,6 @@ Not the best solution, but it works just fine.
 * [CWShell Website](https://hammad-hab.github.io/CWShell-2.0/)
 * [CWShell 1.0 & 1.2](https://hammad-hab.github.io/CWShell/)
 * [CWShell 2.0 Documentation](https://hammad-hab.github.io/CWShell-2.0/docs.htm)
+
+### Credits
+The picture used as parallax is not owned by the creators of CWShell. All rights go to the respective owner. If someone wants to have it removed. Please report at the issues section
