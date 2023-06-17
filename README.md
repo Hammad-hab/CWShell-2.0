@@ -36,3 +36,8 @@ The command loop does much more. Firstly, it helps in controlling keyboard inter
 * 
 ### Credits
 The picture used as parallax is not owned by the creators of CWShell. All rights go to the respective owner. If someone wants to have it removed. Please report at the issues section
+
+### Future updates
+* Better documentation
+* Better and more usable API
+* Blacklisting feature
